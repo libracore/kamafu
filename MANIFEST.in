@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include kamafu *.css
+recursive-include kamafu *.csv
+recursive-include kamafu *.html
+recursive-include kamafu *.ico
+recursive-include kamafu *.js
+recursive-include kamafu *.json
+recursive-include kamafu *.md
+recursive-include kamafu *.png
+recursive-include kamafu *.py
+recursive-include kamafu *.svg
+recursive-include kamafu *.txt
+recursive-exclude kamafu *.pyc
