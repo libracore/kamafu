@@ -190,6 +190,24 @@ def get_data():
             "items": [
                    {
                        "type": "doctype",
+                       "name": "Employee",
+                       "label": _("Employee"),
+                       "description": _("Employee")
+                   },
+                   {
+                       "type": "doctype",
+                       "name": "Salary Structure Assignment",
+                       "label": _("Salary Structure Assignment"),
+                       "description": _("Salary Structure Assignment")
+                   },
+                   {
+                       "type": "doctype",
+                       "name": "Payroll Entry",
+                       "label": _("Payroll Entry"),
+                       "description": _("Payroll Entry")
+                   },
+                   {
+                       "type": "doctype",
                        "name": "Salary Certificate",
                        "label": _("Salary Certificate"),
                        "description": _("Salary Certificate")
