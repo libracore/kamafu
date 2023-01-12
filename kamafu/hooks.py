@@ -127,3 +127,7 @@ app_license = "AGPL"
 # 	"Task": "kamafu.task.get_dashboard_data"
 # }
 
+# hook for migrate cleanup tasks
+after_migrate = [
+    'kamafu.kamafu.updater.cleanup_languages'
+]
