@@ -202,6 +202,12 @@ def get_data():
                    },
                    {
                        "type": "doctype",
+                       "name": "Timesheet",
+                       "label": _("Timesheet"),
+                       "description": _("Timesheet")
+                   },
+                   {
+                       "type": "doctype",
                        "name": "Salary Structure Assignment",
                        "label": _("Salary Structure Assignment"),
                        "description": _("Salary Structure Assignment")
