@@ -21,6 +21,12 @@ def get_data():
                 },
                 {
                     "type": "doctype",
+                    "name": "Contact",
+                    "label": _("Contact"),
+                    "description": _("Contact")
+                },
+                {
+                    "type": "doctype",
                     "name": "Event",
                     "label": _("Event"),
                     "description": _("Event")
@@ -193,6 +199,12 @@ def get_data():
                        "name": "Employee",
                        "label": _("Employee"),
                        "description": _("Employee")
+                   },
+                   {
+                       "type": "doctype",
+                       "name": "Timesheet",
+                       "label": _("Timesheet"),
+                       "description": _("Timesheet")
                    },
                    {
                        "type": "doctype",
