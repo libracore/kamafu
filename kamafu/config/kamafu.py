@@ -85,6 +85,13 @@ def get_data():
                     "label": _("Accounts Receivable"),
                     "doctype": "Sales Invoice",
                     "is_query_report": True
+                },
+                {
+                    "type": "report",
+                    "name": "Offene Kundenguthaben",
+                    "label": _("Offene Kundenguthaben"),
+                    "doctype": "Sales Invoice",
+                    "is_query_report": True
                 }
             ]
         },
@@ -244,6 +251,18 @@ def get_data():
                         "label": _("Annual Salary Sheet"),
                         "doctype": "Salary Slip",
                         "is_query_report": True
+                   }
+            ]
+        },
+        {
+            "label": _("Settings"),
+            "icon": "fa fa-users",
+            "items": [
+                   {
+                       "type": "doctype",
+                       "name": "Kamafu Settings",
+                       "label": _("Kamafu Settings"),
+                       "description": _("Kamafu Settings")
                    }
             ]
         }

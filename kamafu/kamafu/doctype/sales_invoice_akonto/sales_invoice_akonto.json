@@ -1,0 +1,69 @@
+{
+ "creation": "2023-02-27 12:16:25.687606",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "description",
+  "col_main",
+  "amount",
+  "sec_akonto",
+  "akonto_invoice_item",
+  "akonto_net_amount",
+  "akonto_gross_amount"
+ ],
+ "fields": [
+  {
+   "fieldname": "description",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Description",
+   "reqd": 1
+  },
+  {
+   "fieldname": "col_main",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "amount",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Amount",
+   "options": "currency",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sec_akonto",
+   "fieldtype": "Section Break",
+   "label": "Akonto"
+  },
+  {
+   "fieldname": "akonto_invoice_item",
+   "fieldtype": "Data",
+   "label": "Akonto Invoice Item"
+  },
+  {
+   "fieldname": "akonto_net_amount",
+   "fieldtype": "Currency",
+   "label": "Akonto Net Amount",
+   "options": "currency"
+  },
+  {
+   "fieldname": "akonto_gross_amount",
+   "fieldtype": "Currency",
+   "label": "Akonto Gross Amount",
+   "options": "currency"
+  }
+ ],
+ "istable": 1,
+ "modified": "2023-02-27 12:16:25.687606",
+ "modified_by": "Administrator",
+ "module": "Kamafu",
+ "name": "Sales Invoice Akonto",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
