@@ -1,0 +1,31 @@
+{
+ "custom_fields": [],
+ "custom_perms": [],
+ "doctype": "Quotation Item",
+ "property_setters": [
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "creation": "2023-02-15 10:39:54.736498",
+   "default_value": null,
+   "doc_type": "Quotation Item",
+   "docstatus": 0,
+   "doctype_or_field": "DocField",
+   "field_name": "section_break_5",
+   "idx": 0,
+   "modified": "2023-02-15 10:39:54.736498",
+   "modified_by": "Administrator",
+   "name": "Quotation Item-section_break_5-collapsible",
+   "owner": "Administrator",
+   "parent": null,
+   "parentfield": null,
+   "parenttype": null,
+   "property": "collapsible",
+   "property_type": "Check",
+   "value": "0"
+  }
+ ],
+ "sync_on_migrate": 1
+}
