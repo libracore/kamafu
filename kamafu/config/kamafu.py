@@ -7,6 +7,12 @@ def get_data():
             "label": _("CRM"),
             "icon": "fa fa-money",
             "items": [
+				{
+                    "type": "doctype",
+                    "name": "Deal",
+                    "label": _("Deal"),
+                    "description": _("Deal")
+                },
                 {
                     "type": "doctype",
                     "name": "Lead",

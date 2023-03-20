@@ -9,6 +9,10 @@ try {
         {
             'label': 'Leads',
             'items': ['Lead']
+        },
+        {
+            'label': 'Deals',
+            'items': ['Deal']
         }
     ]);
 } catch { /* do nothing for older versions */ }
