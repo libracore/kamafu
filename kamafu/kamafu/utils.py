@@ -36,7 +36,7 @@ def create_akonto(sales_order):
         'rate': round((so_doc.net_total * 0.3), 2),
         'sales_order': sales_order
     })
-    akonto.title = "Anzahlungsrechnung"
+    # akonto.title = "Anzahlungsrechnung"           # 2023-03-20 do not override title
     akonto.set_missing_values()
     return akonto
 
