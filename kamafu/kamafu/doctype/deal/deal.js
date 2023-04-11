@@ -1,7 +1,7 @@
 // Copyright (c) 2023, libracore AG and contributors
 // For license information, please see license.txt
 
-var customer;
+var customer_history;
 
 frappe.ui.form.on('Deal', {
 
@@ -23,6 +23,10 @@ frappe.ui.form.on('Deal', {
             if (last_route[1] == "Customer") {
                 console.log("last_route", last_route)
                 frm.set_value("customer", last_route[2]);
+                
+                set_customer_details_in_deal(frm, last_route[2])
+                filter_field(frm, "contact", last_route[2]) 		
+				filter_field(frm, "address", last_route[2]) 
             }
         }
         
@@ -45,7 +49,8 @@ frappe.ui.form.on('Deal', {
 		
 		
 		if (frm.doc.customer) {
-			customer = frm.doc.customer;
+			customer_history = frm.doc.customer;
+			
 		} else {
 			frm.page.add_inner_button('Customer', (frm) => create_customer(), 'Create')
 		}
@@ -63,6 +68,16 @@ frappe.ui.form.on('Deal', {
 		// If the link is removed, make changes in the linked document
 		if (!frm.doc.customer) {
 			set_customer(frm, "")
+			frm.set_value("company_name", "");
+			frm.set_value("lead_name", "");
+			frm.set_value("email_id", "");
+			frm.set_value("contact", "");
+			frm.set_value("address", "");		
+		} else {
+			set_customer_details_in_deal(frm, frm.doc.customer)
+			frm.set_value("contact", "");
+			filter_field(frm, "contact", frm.doc.customer)
+			filter_field(frm, "address", frm.doc.customer)  
 		}
 	},
 
@@ -112,17 +127,86 @@ function create_opportunity(frm){
 
 function set_customer(frm, value){
 
-	var doctype_name = customer || frm.doc.customer
+	var doctype_name = customer_history || frm.doc.customer
 	
-	frappe.call({
-		'method': "frappe.client.set_value",
-		'args': {
-			'doctype': "Customer",
-			'name': doctype_name,
-			'fieldname': {
-					"deal_name": value,
+	if (doctype_name){
+	
+		frappe.call({
+			'method': "frappe.client.set_value",
+			'args': {
+				'doctype': "Customer",
+				'name': doctype_name,
+				'fieldname': {
+						"deal_name": value,
+				},
 			},
-		},
-    });
+		});
+	}
 	
+}
+
+function set_customer_details_in_deal(frm, customer) {
+
+		frappe.call({
+			'method': "frappe.client.get",
+			'args': {
+				'doctype': "Customer",
+				'name': customer
+			},
+			"callback": function(res) {
+				var customer_doc = res.message;
+				console.log("response", customer_doc)
+				
+				if (customer_doc.customer_type === "Company") {
+					frm.set_value("organization_lead", 1);
+					frm.set_value("company_name", customer_doc.customer_name);
+				} else {
+					frm.set_value("lead_name", customer_doc.customer_name);
+				}
+				
+				if (customer_doc.email_id) {
+					frm.set_value("email_id", customer_doc.email_id);
+				}
+				
+			}
+		});
+								
+		frappe.call({
+			'method': "frappe.contacts.doctype.address.address.get_default_address",
+			'args': {
+				'doctype': "Customer",
+				'name': customer,
+			},
+			"callback": function(res) {
+				var address = res.message;
+				console.log("addreeees", address)
+				
+				frm.set_value("address", address);		
+				
+				if(frm.doc.address){
+					return frm.call({
+					 method: "frappe.contacts.doctype.address.address.get_address_display",
+						args: {
+							"address_dict": frm.doc.address
+						},
+						callback: function(r) {
+							if(r.message){ 
+								frm.set_value("address_display", r.message);
+							}
+						}
+					});
+				}						
+						
+			}
+		});
+}
+
+function filter_field(frm, field, filter) {
+	frm.set_query(field, function() {
+		return {
+			filters: {
+				link_name: filter
+			}
+		}
+	})
 }
