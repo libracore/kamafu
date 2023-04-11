@@ -10,6 +10,7 @@
   "section_existing_customer",
   "deal_details",
   "naming_series",
+  "event_name",
   "lead_name",
   "company_name",
   "email_id",
@@ -34,7 +35,9 @@
   "notes",
   "contact_info",
   "address_desc",
+  "address",
   "address_html",
+  "address_display",
   "column_break2",
   "contact_html",
   "phone",
@@ -62,7 +65,7 @@
    "default": "0",
    "fieldname": "organization_lead",
    "fieldtype": "Check",
-   "label": "Lead is an Organization"
+   "label": "Deal is an Organization"
   },
   {
    "fieldname": "section_existing_customer",
@@ -81,6 +84,7 @@
    "options": "DEAL-.#####"
   },
   {
+   "depends_on": "eval:doc.organization_lead",
    "fieldname": "company_name",
    "fieldtype": "Data",
    "in_list_view": 1,
@@ -95,6 +99,7 @@
   {
    "fieldname": "title",
    "fieldtype": "Data",
+   "hidden": 1,
    "label": "Title"
   },
   {
@@ -112,7 +117,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "Lead Owner",
+   "label": "Deal Owner",
    "options": "User"
   },
   {
@@ -123,13 +128,13 @@
    "options": "\nAnfrage\nTelefonat/Bedarfsanalyse\nOfferte gesendet\nOfferte nachgehakt/nachbearbeitet\nGewonnen\nVerloren"
   },
   {
-   "default": "Lead",
+   "default": "Deal",
    "fieldname": "status",
    "fieldtype": "Select",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Status",
-   "options": "Lead\nOpen\nReplied\nOpportunity\nQuotation\nLost Quotation\nInterested\nConverted\nDo Not Contact",
+   "options": "Deal\nOpen\nReplied\nOpportunity\nQuotation\nLost Quotation\nInterested\nConverted\nDo Not Contact",
    "reqd": 1
   },
   {
@@ -219,12 +224,14 @@
    "depends_on": "eval:doc.__islocal",
    "fieldname": "address_desc",
    "fieldtype": "HTML",
+   "hidden": 1,
    "label": "Address Desc",
    "print_hide": 1
   },
   {
    "fieldname": "address_html",
    "fieldtype": "HTML",
+   "hidden": 1,
    "label": "Address HTML",
    "read_only": 1
   },
@@ -356,12 +363,32 @@
    "fieldtype": "Data",
    "in_global_search": 1,
    "in_list_view": 1,
-   "label": "Person Name",
+   "label": "Customer Name",
    "unique": 1
+  },
+  {
+   "fieldname": "event_name",
+   "fieldtype": "Data",
+   "label": "Event Name",
+   "translatable": 1
+  },
+  {
+   "depends_on": "eval: doc.address",
+   "fieldname": "address_display",
+   "fieldtype": "Data",
+   "label": "Address Display",
+   "read_only": 1,
+   "translatable": 1
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Link",
+   "label": "Customer Address",
+   "options": "Address"
   }
  ],
  "icon": "fa fa-user",
- "modified": "2023-03-02 11:42:21.542599",
+ "modified": "2023-04-11 09:32:13.616513",
  "modified_by": "Administrator",
  "module": "Kamafu",
  "name": "Deal",
