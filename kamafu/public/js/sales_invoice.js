@@ -25,6 +25,7 @@ function find_akontos(frm) {
                 console.log(akonto);
                 if (akonto.length > 0) {
                     var akonto_total = 0;
+                    cur_frm.clear_table("akontos");
                     for (var a = 0; a < akonto.length; a++) {
                         add_akonto(
                             "Akonto vom " + new Date(akonto[a].date).toLocaleString("de", {'day': '2-digit', 'month': '2-digit', 'year': 'numeric'}) + " (" + frm.doc.currency + " " + akonto[a].amount.toLocaleString("de-ch") + " inkl. MwSt)", 
