@@ -88,3 +88,16 @@ def book_akonto(sales_invoice, net_amount):
     jv.submit()
     frappe.db.commit()
     return jv.name
+
+@frappe.whitelist()
+def get_item_tax_rate(item_code, sales=True):
+    item = frappe.get_doc("Item", item_code)
+    if item.item_defaults and len(item.item_defaults) > 0:
+        if sales:
+            account = item.item_defaults[0].income_account
+        else:
+            account = item.item_defaults[0].expense_account
+        return frappe.get_value("Account", account, "steuersatz")
+    else:
+        return 0
+        

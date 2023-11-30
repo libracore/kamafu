@@ -16,7 +16,7 @@ frappe.ui.form.on('Sales Invoice', {
             for (var i = 0; i < frm.doc.items.length; i++) {
                 update_tax(frm, frm.doc.items[i].doctype, frm.doc.items[i].name);
             }
-            compile_taxes(frm);
+            compile_sales_taxes(frm);
         }
     }
 });
@@ -91,33 +91,5 @@ function check_create_akonto_booking(frm) {
     }
 }
 
-function update_tax(frm, cdt, cdn) {
-    var row = locals[cdt][cdn];
-    frappe.model.set_value(cdt, cdn, "tax_amount", (row.base_net_amount || 0) * ((row.tax_rate || 0) / 100));
-}
 
-function compile_taxes(frm) {
-    if ((frm.doc.items) && ((frm.doc.taxes_and_charges || "").includes("Automatisch"))) {
-        // find taxes by rate
-        var total_normal_tax = 0;
-        var total_reduced_tax = 0;
-        for (var i = 0; i < frm.doc.items.length; i++) {
-            if (frm.doc.items[i].tax_rate < 5) {
-                total_reduced_tax += frm.doc.items[i].tax_amount;
-            } else {
-                total_normal_tax += frm.doc.items[i].tax_amount;
-            }
-        }
-        
-        if (frm.doc.taxes.length !== 2) {
-            frappe.msgprint(__("Ungültige Steuereinstellung. Bitte die Vorlage neu laden.") );
-        } else {
-            frappe.model.set_value(frm.doc.taxes[0].doctype, frm.doc.taxes[0].name, "description", "8.1% MwSt");
-            frappe.model.set_value(frm.doc.taxes[0].doctype, frm.doc.taxes[0].name, "tax_amount", total_normal_tax);
-            frappe.model.set_value(frm.doc.taxes[1].doctype, frm.doc.taxes[1].name, "description", "2.6% MwSt");
-            frappe.model.set_value(frm.doc.taxes[1].doctype, frm.doc.taxes[1].name, "tax_amount", total_reduced_tax);
-            cur_frm.refresh_fields("taxes");
-        }
-    }
-}
 
