@@ -10,6 +10,23 @@ frappe.ui.form.on('Sales Invoice', {
     },
     on_submit: function(frm) {
         check_create_akonto_booking(frm);
+    },
+    before_save: function(frm) {
+        if (frm.doc.items) {
+            for (var i = 0; i < frm.doc.items.length; i++) {
+                update_tax(frm, frm.doc.items[i].doctype, frm.doc.items[i].name);
+            }
+            compile_sales_taxes(frm);
+        }
+    }
+});
+
+frappe.ui.form.on('Sales Invoice Item', {
+    base_net_amount: function(frm, cdt, cdn) {
+        update_tax(frm, cdt, cdn);
+    },
+    tax_rate: function(frm, cdt, cdn) {
+        update_tax(frm, cdt, cdn);
     }
 });
 
@@ -25,6 +42,7 @@ function find_akontos(frm) {
                 console.log(akonto);
                 if (akonto.length > 0) {
                     var akonto_total = 0;
+                    cur_frm.clear_table("akontos");
                     for (var a = 0; a < akonto.length; a++) {
                         add_akonto(
                             "Akonto vom " + new Date(akonto[a].date).toLocaleString("de", {'day': '2-digit', 'month': '2-digit', 'year': 'numeric'}) + " (" + frm.doc.currency + " " + akonto[a].amount.toLocaleString("de-ch") + " inkl. MwSt)", 
@@ -72,3 +90,6 @@ function check_create_akonto_booking(frm) {
         }
     }
 }
+
+
+
