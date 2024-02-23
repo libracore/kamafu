@@ -271,6 +271,18 @@ def get_data():
                        "description": _("Kamafu Settings")
                    }
             ]
-        }
+        },
+        {
+            "label": _("Acumbamail"),
+            "icon": "octicon octicon-mail",
+            "items": [
+                {
+                   "type": "page",
+                   "name": "sync_acumbamail",
+                   "label": _("Sync AcumbaMail"),
+                   "description": _("Sync AcumbaMail")
+                }
+            ]
+        },
     ]
     

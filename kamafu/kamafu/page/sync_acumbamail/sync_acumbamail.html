@@ -1,0 +1,29 @@
+<div style="margin: 5px; margin-top: 0px; border-top: 1px solid white; ">
+  <h3>{%= __("Sync AcumbaMial") %}</h3>
+  <p class="text-muted">{%= __("Synchronise contacts and campaigns to AcumbaMial") %}</p>
+
+  <div class="section-body">
+    <div class="row">
+        <div class="form-column col-sm-3">
+        <p>{{ __("AcumbaMial Lists") }}</p>
+        <select id="acumbamail_lists"></select>
+        <button type="submit" class="btn btn-sm btn-basic btn-parse-file">{{ __("Get Members") }}</button>
+        <div class="waiting-gif-members hide"><img src="/assets/frappe/images/ui/ajax-loader.gif" /></div>	    
+        </div>
+
+    <div class="form-column col-sm-6">
+        <p>{{ __("Functions") }}</p>
+        <p></p>
+        <button type="submit" class="btn btn-sm btn-primary btn-upload-contacts">{{ __("Sync Contacts with AcumbaMail") }}</button>
+        <div class="waiting-gif-upload hide"><img src="/assets/frappe/images/ui/ajax-loader.gif" /></div>
+        <!-- <button type="submit" class="btn btn-sm btn-primary btn-download-campaigns">{{ __("Campaigns from MailChimp") }}</button> -->
+        <!-- <div class="waiting-gif-download hide"><img src="/assets/frappe/images/ui/ajax-loader.gif" /></div> -->
+    </div>     
+        <div class="form-column col-sm-3">
+        <div class="insert-log-messages"></div>
+    </div>     
+    </div>
+                
+  </div>
+  
+</div>
