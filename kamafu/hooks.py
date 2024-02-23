@@ -16,7 +16,7 @@ app_license = "AGPL"
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/kamafu/css/kamafu.css"
-# app_include_js = "/assets/kamafu/js/kamafu.js"
+app_include_js = "/assets/kamafu/js/kamafu_common.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/kamafu/css/kamafu.css"
@@ -29,8 +29,10 @@ app_license = "AGPL"
 doctype_js = {
     "Lead" : "public/js/lead.js",
     "Customer" : "public/js/customer.js",
+    "Quotation" : "public/js/quotation.js",
     "Sales Order" : "public/js/sales_order.js",
-    "Sales Invoice" : "public/js/sales_invoice.js"
+    "Sales Invoice" : "public/js/sales_invoice.js",
+    "Purchase Invoice" : "public/js/purchase_invoice.js"
 }
 
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}

@@ -1,5 +1,5 @@
 {
- "autoname": "naming_series: ",
+ "autoname": "naming_series:",
  "creation": "2023-02-28 12:45:19.591633",
  "doctype": "DocType",
  "document_type": "Document",
@@ -365,7 +365,7 @@
    "in_global_search": 1,
    "in_list_view": 1,
    "label": "Customer Name",
-   "unique": 1
+   "unique": 0
   },
   {
    "fieldname": "event_name",
@@ -391,7 +391,7 @@
   }
  ],
  "icon": "fa fa-user",
- "modified": "2023-04-26 16:58:39.558311",
+ "modified": "2023-10-27 15:43:13.616513",
  "modified_by": "Administrator",
  "module": "Kamafu",
  "name": "Deal",
