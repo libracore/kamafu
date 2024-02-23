@@ -11,6 +11,7 @@
   "deal_details",
   "naming_series",
   "event_name",
+  "event_location",
   "lead_name",
   "company_name",
   "email_id",
@@ -364,8 +365,7 @@
    "fieldtype": "Data",
    "in_global_search": 1,
    "in_list_view": 1,
-   "label": "Customer Name",
-   "unique": 0
+   "label": "Customer Name"
   },
   {
    "fieldname": "event_name",
@@ -388,10 +388,15 @@
    "fieldtype": "Link",
    "label": "Customer Address",
    "options": "Address"
+  },
+  {
+   "fieldname": "event_location",
+   "fieldtype": "Data",
+   "label": "Event Location"
   }
  ],
  "icon": "fa fa-user",
- "modified": "2023-10-27 15:43:13.616513",
+ "modified": "2024-02-23 22:06:39.486366",
  "modified_by": "Administrator",
  "module": "Kamafu",
  "name": "Deal",

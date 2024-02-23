@@ -8,7 +8,9 @@
   "sec_acumba",
   "acumbamail_auth_token",
   "sec_caldav",
-  "caldav_secret"
+  "caldav_secret",
+  "sec_web",
+  "website_secret"
  ],
  "fields": [
   {
@@ -38,10 +40,20 @@
    "fieldname": "caldav_secret",
    "fieldtype": "Data",
    "label": "CalDAV Secret"
+  },
+  {
+   "fieldname": "sec_web",
+   "fieldtype": "Section Break",
+   "label": "Website"
+  },
+  {
+   "fieldname": "website_secret",
+   "fieldtype": "Data",
+   "label": "Website Secret"
   }
  ],
  "issingle": 1,
- "modified": "2024-02-23 21:11:32.046278",
+ "modified": "2024-02-23 21:50:41.924928",
  "modified_by": "Administrator",
  "module": "Kamafu",
  "name": "Kamafu Settings",
