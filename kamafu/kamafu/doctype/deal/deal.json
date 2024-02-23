@@ -124,6 +124,7 @@
    "default": "Anfrage",
    "fieldname": "stage",
    "fieldtype": "Select",
+   "in_list_view": 1,
    "label": "Stage",
    "options": "\nAnfrage\nTelefonat/Bedarfsanalyse\nOfferte gesendet\nOfferte nachgehakt/nachbearbeitet\nGewonnen\nVerloren"
   },
