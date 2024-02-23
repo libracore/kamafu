@@ -6,7 +6,9 @@
  "field_order": [
   "akonto_item",
   "sec_acumba",
-  "acumbamail_auth_token"
+  "acumbamail_auth_token",
+  "sec_caldav",
+  "caldav_secret"
  ],
  "fields": [
   {
@@ -26,10 +28,20 @@
    "fieldname": "acumbamail_auth_token",
    "fieldtype": "Password",
    "label": "Acumbamail Auth Token"
+  },
+  {
+   "fieldname": "sec_caldav",
+   "fieldtype": "Section Break",
+   "label": "CalDAV"
+  },
+  {
+   "fieldname": "caldav_secret",
+   "fieldtype": "Data",
+   "label": "CalDAV Secret"
   }
  ],
  "issingle": 1,
- "modified": "2024-02-23 10:39:55.971198",
+ "modified": "2024-02-23 21:11:32.046278",
  "modified_by": "Administrator",
  "module": "Kamafu",
  "name": "Kamafu Settings",
