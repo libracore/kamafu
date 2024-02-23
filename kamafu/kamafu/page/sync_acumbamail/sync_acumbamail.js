@@ -31,7 +31,7 @@ frappe.sync_acumbamail = {
         this.page.main.find(".btn-upload-contacts").on('click', function() {	
             // upload contacts
             var list_id = document.getElementById("acumbamail_lists").value;
-            sync_contacts(page, list_id, subscription);
+            sync_contacts(page, list_id);
         });
         /* this.page.main.find(".btn-download-campaigns").on('click', function() {	
             // download campaigns
@@ -52,10 +52,10 @@ function load_acumbamail_lists(page) {
         callback: function(r) {
             if (r.message) {
                 var select = document.getElementById("acumbamail_lists");
-                for (var i = 0; i < r.message.lists.length; i++) {
+                for (const [key, value] of Object.entries(r.message)) {
                     var opt = document.createElement("option");
-                    opt.value = r.message.lists[i].id;
-                    opt.innerHTML = r.message.lists[i].name;
+                    opt.value = key;
+                    opt.innerHTML = value.name;
                     select.appendChild(opt);
                 }
             } 
@@ -73,8 +73,8 @@ function get_acumbamail_members(page, list_id) {
         callback: function(r) {
             if (r.message) {
                 var parent = page.main.find(".insert-log-messages").empty();
-                for (var i = 0; i < r.message.members.length; i++) {
-                    $('<p>' + __(r.message.members[i].email_address) + '</p>').appendTo(parent);
+                for (const [key, value] of Object.entries(r.message)) {
+                    $('<p>' + key + ": " + value.status + '</p>').appendTo(parent);
                 }
             } 
             // disable waiting gif
@@ -88,10 +88,7 @@ function sync_contacts(page, list_id) {
     // enable waiting gif
     page.main.find(".waiting-gif-upload").removeClass("hide");
     page.main.find(".btn-upload-contacts").addClass("hide");
-    var master = 0;
-    if (mailchimp_as_master) {
-        master = 1;
-    }
+
     frappe.call({
         method: 'kamafu.kamafu.page.sync_acumbamail.sync_acumbamail.enqueue_sync_contacts',
         args: { 

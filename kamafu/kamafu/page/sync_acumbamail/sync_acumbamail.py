@@ -19,22 +19,24 @@ import os
 acumbamail_host = "https://acumbamail.com/api/1"
 
 # execute API function
-def execute(endpoint, payload, verify_ssl=True, method="GET"):  
+def execute(endpoint, verify_ssl=True, method="GET"):  
     try:
-        payload['auth_token'] = get_decrypted_password("Kamafu Settings", "Kamafu Settings", "acumbamail_auth_token", False)
+        auth_token = get_decrypted_password("Kamafu Settings", "Kamafu Settings", "acumbamail_auth_token", False)
         host = os.path.join(acumbamail_host, endpoint)
+        if "?" in host:
+            host += "&auth_token={0}".format(auth_token)
+        else:
+            host += "?auth_token={0}".format(auth_token)
         response = requests.request(
             method=method,
             url=host,
-            json=payload,
-            # auth=HTTPBasicAuth("libracore", api_token),
             verify=verify_ssl)
         
         status=response.status_code
         text=response.text
         if status not in [200, 404]:
-            frappe.log_error("Unexpected Acumbamail response: http {method} {host} response {status} with message {text} on payload {payload}".format(
-                status=status,text=text, payload=payload, method=method, host=host))
+            frappe.log_error("Unexpected Acumbamail response: http {method} {host} response {status} with message {text}".format(
+                status=status,text=text, method=method, host=host))
         if status == 404:
             return None
         
@@ -45,17 +47,34 @@ def execute(endpoint, payload, verify_ssl=True, method="GET"):
         
 @frappe.whitelist()
 def get_lists():
-    raw = execute(endpoint="getLists/", payload={})
-    results = json.loads(raw)
-        
-    return { 'lists': results['lists'] }
+    raw = execute(endpoint="getLists/")
+    results = {}
+    try:
+        results = json.loads(raw)
+    except Exception as err:
+        frappe.throw("Unexepcted response: {0}".format(raw))
+    
+    """
+    Lists provided as:
+        {
+            'list_id': {'name': 'list_name', 'description': 'description}
+        }
+    """
+    return results
 
 @frappe.whitelist()
 def get_members(list_id, count=10000):
  
-    raw = execute(endpoint="getSubscribers/?list_id={list_id}&all_fields=1", payload={})
+    raw = execute(endpoint="getSubscribers/?list_id={list_id}&all_fields=1".format(list_id=list_id))
+    
+    """
+    Members provided as:
+        {
+            'email_id': {'status': 'active', 'create_date': '...', 'email': '...', 'id': '1234'}
+        }
+    """
     results = json.loads(raw)
-    return { 'members': results['members'] }
+    return results
 
 @frappe.whitelist()
 def enqueue_sync_contacts(list_id):
@@ -85,7 +104,6 @@ def sync_contacts(list_id):
     
     # get list members
     members = get_members(list_id)
-    member_status_map = create_member_status_map(members)
     
     # sync
     contact_written = []
@@ -93,40 +111,26 @@ def sync_contacts(list_id):
 
         # load subscription status from acumbamail
         # default is unsubscribed
-        if cnt['email_id'] in member_status_map:
+        if cnt['email_id'] in members:
             # contact already in acumbamail
-            contact_status = member_status_map[cnt['email_id']]
-            endpoint = "addSubscriber/?update_subscriber=1"
+            contact_status = members[cnt['email_id']]['status']
+            endpoint = "addSubscriber/?update_subscriber=1&list_id={list_id}".format(list_id=list_id)
             
         else:
             # new contact
-            contact_status = "unsubscribed" if cnt['unsubscribed'] else "subscribed"
-            endpoint = "addSubscriber/?update_subscriber=0"
+            contact_status = "inactive" if cnt['unsubscribed'] else "active"
+            endpoint = "addSubscriber/?update_subscriber=0&list_id={list_id}".format(list_id=list_id)
 
-        contact_object = {
-            "email_address": contact.email_id,
-            "status": contact_status,
-            "merge_fields": {
-                "FNAME": contact.first_name or "", 
-                "LNAME": contact.last_name or ""
-            }
-        }
+        endpoint += "&merge_fields[email]={email}&merge_fields[status]={status}&merge_fields[fname]={fname}&merge_fields[lname]={fname}".format(
+            email=cnt['email_id'], status=contact_status, fname=cnt['first_name'] or "", lname=cnt['last_name'] or "")
             
-
-        raw = execute(endpoint=endpoint, payload=contact_object)
-        contact_written.append(contact.email_id)
+        raw = execute(endpoint=endpoint)
+        contact_written.append(cnt['email_id'])
     
-    #add_log(title= _("Sync complete"), 
-    #   description= ( _("Sync of contacts to {0} completed.\n{1}")).format(list_id, ",".join(contact_written)),
-    #   status="Completed")
-    return { 'members': results['members'] }
-
-def create_member_status_map(members):
-    member_status_map = {}
-    for m in members:
-        member_status_map[m.subscriber] = m.status
-    return member_status_map
-    
+    add_log(title= _("Sync complete"), 
+       description= ( _("Sync of contacts to {0} completed.\n{1}")).format(list_id, ",".join(contact_written)),
+       status="Completed")
+    return contact_written
             
 @frappe.whitelist()
 def enqueue_get_campaigns(list_id):
@@ -158,9 +162,24 @@ def get_campaigns():
             new_campaign.campaign_name = campaign['settings']['title']
             new_campaign.insert()
          
-    #add_log(title= _("Sync complete"), 
-    #   description= ( _("Sync of campaigns from {0} completed.")).format(list_id),
-    #   status="Completed")
+    add_log(title= _("Sync complete"), 
+       description= ( _("Sync of campaigns from {0} completed.")).format(list_id),
+       status="Completed")
     return { 'campaigns': results['campaigns'] }
 
+def delete_member(list_id, email):
+    endpoint = "deleteSubscriber/?list_id={list_id}&email={email}".format(list_id=list_id, email=email)
+    raw = execute(endpoint=endpoint)
+    return
 
+def add_log(title, description, status="OK"):
+    new_log = frappe.get_doc({
+        'doctype': 'Acumbamail Log',
+        'title': title,
+        'description': description,
+        'status': status,
+        'date': datetime.now()
+    })
+    new_log.insert()
+    frappe.db.commit()
+    return
