@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023, libracore and Contributors
+# Copyright (c) 2021-2024, libracore and Contributors
 # License: GNU General Public License v3. See license.txt
 
 from __future__ import unicode_literals
@@ -101,3 +101,42 @@ def get_item_tax_rate(item_code, sales=True):
     else:
         return 0
         
+
+@frappe.whitelist()
+def get_next_item_code():
+    pattern = {
+        'prefix': "A",
+        'length': 5
+    }
+    
+    last_item_code = frappe.db.sql("""
+        SELECT `name`
+        FROM `tabItem`
+        WHERE 
+            `name` LIKE "{prefix}%"
+            AND LENGTH(`name`) = {length}
+        ORDER BY `name` DESC
+        LIMIT 1;""".format(
+        prefix=pattern['prefix'], length=len(pattern['prefix']) + pattern['length']),
+        as_dict=True)
+    
+    if len(last_item_code) == 0:
+        next_number = 1
+    else:
+        prefix_length = len(pattern['prefix'])
+        last_number = cint((last_item_code[0]['name'])[prefix_length:])
+        next_number = last_number + 1
+    
+    next_number_string = get_fixed_length_string(next_number, pattern['length'])
+    
+    return "{prefix}{n}".format(prefix=pattern['prefix'], n=next_number_string)
+    
+def get_fixed_length_string(n, length):
+    next_number_string = "{0}{1}".format(
+        (length * "0"), n)[((-1)*length):]
+    # prevent duplicates on naming series overload
+    if n > cint(next_number_string):
+        next_number_string = "{0}".format(n)
+    
+    return next_number_string
+    
